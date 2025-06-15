@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
+using Utils;
 
-public class SpawnObject : MonoBehaviour
+public class SpawnObject : MonoSingleton<SpawnObject>
 {
     [SerializeField] private ObjectPool objectPool;
     [SerializeField] private string pooledObjectId;
@@ -11,7 +11,6 @@ public class SpawnObject : MonoBehaviour
 
     private void Start()
     {
-        // Tự động tìm ObjectPool nếu chưa gán
         if (objectPool == null)
         {
             objectPool = FindObjectOfType<ObjectPool>();
@@ -22,9 +21,6 @@ public class SpawnObject : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Spawn một object từ pool và đặt vị trí.
-    /// </summary>
     public void Spawn(string pooledObjectId)
     {
         if (objectPool == null)
@@ -47,9 +43,6 @@ public class SpawnObject : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Trả object về lại pool sau 1 giây.
-    /// </summary>
     private IEnumerator ReturnObject(GameObject go)
     {
         yield return new WaitForSeconds(1f);
@@ -60,9 +53,6 @@ public class SpawnObject : MonoBehaviour
         currentX = 0;
     }
 
-    /// <summary>
-    /// Nút test spawn trên màn hình.
-    /// </summary>
     private void OnGUI()
     {
         if (GUILayout.Button("Spawn Object"))
